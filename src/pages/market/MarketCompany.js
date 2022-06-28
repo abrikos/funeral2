@@ -25,7 +25,6 @@ export default function MarketCompany() {
 
     async function loadCompany() {
         const comp = await api.get('/companies/' + id)
-        comp.photos.push(comp.photos[0])
         setCompany(comp)
         const cont = await api.get('/contacts/' + comp.contactId)
         cont.fio = cont.lastname + ' ' + cont.firstname + ' ' + cont.patronymic
