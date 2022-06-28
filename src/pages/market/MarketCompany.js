@@ -62,13 +62,11 @@ export default function MarketCompany() {
     }
 
     function uploadPhoto({target}){
-        console.log('zzzzzzzzz')
         const newCompany = {...company};
         const formData = new FormData();
         for(const f of target.files){
             formData.append('file',f);
         }
-        console.log('zzzzzzz', formData)
         api.upload(id, formData)
             .then(res=>{
                 newCompany.photos.push(res)
