@@ -61,25 +61,29 @@ export default function MarketCompany() {
 
     }
 
-    function loadPhoto(e){
+    function uploadPhoto({target}){
+        console.log('zzzzzzzzz')
         const newCompany = {...company};
         const formData = new FormData();
-        for(const f of e.target.files){
+        for(const f of target.files){
             formData.append('file',f);
         }
-        console.log(formData)
+        console.log('zzzzzzz', formData)
         api.upload(id, formData)
             .then(res=>{
                 newCompany.photos.push(res)
                 setCompany(newCompany)
+                target.value = null
             })
     }
 
     function deletePhoto(i, photo){
         api.delete(`/companies/${id}/image/${photo.name}`)
-        const newCompany = {...company};
-        newCompany.photos = newCompany.photos.splice(i, 1);
-        setCompany(newCompany)
+            .then(()=>{
+                const newCompany = {...company};
+                newCompany.photos.splice(i, 1);
+                setCompany(newCompany)
+            })
     }
 
     const navigate = useNavigate()
@@ -91,7 +95,7 @@ export default function MarketCompany() {
     }
 
     return <div className="market-company">
-        <input type="file" ref={reference} style={{display: 'none'}} onChange={loadPhoto} accept="image/*"/>
+        <input type="file" ref={reference} style={{display: 'none'}} onChange={uploadPhoto} accept="image/*"/>
         <div className="header">
             <Link className="back" to={'/market'}>
                 <img src={arrow} alt={'Back'}/> К списку юридических лиц

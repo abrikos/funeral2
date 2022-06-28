@@ -9,10 +9,11 @@ export default function Login() {
     const dispatch = useDispatch()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
 
     async function submit(e){
         e.preventDefault()
-        const token = await api.login(username);
+        const token = await api.login(username).catch(e=>setError(e.response.data.error));
         if(token){
             dispatch(login(token))
         }
@@ -24,6 +25,7 @@ export default function Login() {
         <Input label="Имя" onChange={setUsername}/>
         <Input label="Пароль" onChange={setPassword}/>
         <Button label="Вход" onClick={submit}/>
+            {error && <div style={{color:'red'}}>{error}</div>}
         </center>
     </form>
 }

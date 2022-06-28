@@ -7,11 +7,12 @@ import exit from "icons/exit.svg";
 import './menu.sass'
 import {Link, useLocation} from "react-router-dom";
 import {logout} from "store/user";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 export default function Menu() {
     const location = useLocation()
     const dispatch = useDispatch()
+    const logged = useSelector((state) => state.user && state.user.logged)
 
     function isSelected(path) {
         return path === '/' && location.pathname === '/' ? 'selected' : path !== '/' && location.pathname.includes(path) ? 'selected' : ''
@@ -37,9 +38,9 @@ export default function Menu() {
             <Link to="/chat" className={isSelected('/chat')}>
                 <img src={chat} alt="chat"/>
             </Link>
-            <button onClick={()=>dispatch(logout())}>
+            {logged && <button onClick={()=>dispatch(logout())}>
                 <img src={exit} alt="exit"/>
-            </button>
+            </button>}
 
         </div>
     </div>
